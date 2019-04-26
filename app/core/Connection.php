@@ -41,12 +41,12 @@ class Connection
             return;
         }
 
-        $db = $this->configs['database'] ?? false;
-        $hostname = $this->configs['hostname'] ?? false;
-        $port = $this->configs['port'] ?? false;
-        $charset = $this->configs['charset'] ?? false;
-        $username = $this->configs['username'] ?? false;
-        $password = $this->configs['password'] ?? false;
+        $db = $this->configs['database'] ?? '';
+        $hostname = $this->configs['hostname'] ?? '';
+        $port = $this->configs['port'] ?? '';
+        $charset = $this->configs['charset'] ?? '';
+        $username = $this->configs['username'] ?? '';
+        $password = $this->configs['password'] ?? '';
 
         $this->pdo = new PDO(
             "mysql:dbname={$db};host={$hostname};port={$port};charset={$charset}",

@@ -2,6 +2,8 @@
 
 namespace App\Core;
 
+use \Exception;
+
 class Router
 {
     const METHOD_GET = 'GET';
@@ -71,7 +73,7 @@ class Router
                 $className = "\\App\\Local\\Controller\\{$routeParams['callable'][0]}";
 
                 if (!class_exists($className)) {
-                    throw new \Exception("Controller {$className} not found.");
+                    throw new Exception("Controller {$className} not found.");
                 }
             }
 
@@ -80,7 +82,7 @@ class Router
             $method = $routeParams['callable'][1];
 
             if (!method_exists($controller, $method)) {
-                throw new \Exception("Controller {$className}->{$method}() not found");
+                throw new Exception("Controller {$className}->{$method}() not found");
             }
 
             if ($controller instanceof \App\Core\Controller\AbstractController) {

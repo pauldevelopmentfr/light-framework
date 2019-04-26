@@ -2,6 +2,7 @@
 
 namespace App\Core;
 
+use \BadMethodCallException;
 
 class ViewModel
 {
@@ -43,13 +44,13 @@ class ViewModel
     {
         if (substr($name, 0, 3) !== 'get') {
             $className = static::class;
-            throw new \BadMethodCallException("Call to undefined method {$className}->{$name}()");
+            throw new BadMethodCallException("Call to undefined method {$className}->{$name}()");
         }
 
         $key = substr(strtolower(preg_replace('/([A-Z])/', "_$1", substr($name, 3))), 1);
 
         if (!isset($this->parameters[$key])) {
-            throw new \BadMethodCallException("The method {$name} doesn't exists !");
+            throw new BadMethodCallException("The method {$name} doesn't exists !");
         }
 
         return $this->parameters[$key];

@@ -13,7 +13,7 @@ class HomeController extends AbstractController
     public function indexAction()
     {
         return new ViewModel('index.phtml', [
-            'title' => 'Light Framework',
+            'title' => 'Light Framework'
         ]);
     }
 }
