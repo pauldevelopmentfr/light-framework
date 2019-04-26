@@ -1,0 +1,23 @@
+@font-face {
+    font-family: 'Hello Morgan';
+    src: url('../fonts/HelloMorgan.ttf');
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background: #efefef;
+}
+
+h1 {
+    font-family: 'Hello Morgan';
+    font-size: 60px;
+}
+
+#container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}

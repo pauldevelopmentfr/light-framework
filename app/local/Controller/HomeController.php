@@ -12,7 +12,8 @@ class HomeController extends AbstractController
      */
     public function indexAction()
     {
-        $this->setExtraDatas();
-        return new ViewModel('index.phtml');
+        return new ViewModel('index.phtml', [
+            'title' => 'Light Framework',
+        ]);
     }
 }

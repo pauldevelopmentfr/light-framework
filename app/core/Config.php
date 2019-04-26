@@ -41,7 +41,7 @@ class Config
      *
      * @return mixed
      */
-    public static function getConfig(string $key, object $default = null)
+    public static function getConfig(string $key, $default = null)
     {
         if (self::hasConfig($key)) {
             return self::$configs[$key];
@@ -56,7 +56,7 @@ class Config
      * @param string $key
      * @param mixed $value
      */
-    public static function setConfig(string $key, object $value)
+    public static function setConfig(string $key, $value)
     {
         self::$configs[$key] = $value;
     }

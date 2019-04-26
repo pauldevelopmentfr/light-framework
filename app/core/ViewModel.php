@@ -2,6 +2,7 @@
 
 namespace App\Core;
 
+
 class ViewModel
 {
     /**
@@ -31,18 +32,43 @@ class ViewModel
     }
 
     /**
+     * Overload methods using $this->parameters
+     *
+     * @param string $name
+     * @param array $arguments
+     *
+     * @return mixed
+     */
+    public function __call(string $name, array $arguments)
+    {
+        if (substr($name, 0, 3) !== 'get') {
+            $className = static::class;
+            throw new \BadMethodCallException("Call to undefined method {$className}->{$name}()");
+        }
+
+        $key = substr(strtolower(preg_replace('/([A-Z])/', "_$1", substr($name, 3))), 1);
+
+        if (!isset($this->parameters[$key])) {
+            throw new \BadMethodCallException("The method {$name} doesn't exists !");
+        }
+
+        return $this->parameters[$key];
+    }
+
+    /**
      * Render HTML
      *
      * @return string
      */
-    public function renderHtml(array $variables = []) : string
+    public function renderHtml() : string
     {
         $file = getcwd() . "/public/view/{$this->view}";
+        $datas = $this->parameters;
         $html = '';
     
         if (file_exists($file)) {
             ob_start();
-            extract($variables);
+            extract($datas);
             require_once $file;
             $html = ob_get_clean();
         }

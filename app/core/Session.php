@@ -24,7 +24,7 @@ class Session
      *
      * @return mixed
      */
-    public static function getSession(string $key, object $default = null)
+    public static function getSession(string $key, $default = null)
     {
         if (self::hasSession($key)) {
             return $_SESSION[$key];
@@ -38,7 +38,7 @@ class Session
      * @param string $key
      * @param mixed $value
      */
-    public static function setSession(string $key, object $value)
+    public static function setSession(string $key, $value)
     {
         $_SESSION[$key] = $value;
     }

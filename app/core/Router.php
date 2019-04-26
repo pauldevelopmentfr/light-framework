@@ -19,11 +19,10 @@ class Router
      *
      * @param string $routeName
      * @param array $callable
-     * @param array $extraDatas
      */
-    public static function get(string $routeName, array $callable, array $extraDatas = [])
+    public static function get(string $routeName, array $callable)
     {
-        self::addRoute([self::METHOD_GET], $routeName, $callable, $extraDatas);
+        self::addRoute([self::METHOD_GET], $routeName, $callable);
     }
 
     /**
@@ -31,11 +30,10 @@ class Router
      *
      * @param string $routeName
      * @param array $callable
-     * @param array $extraDatas
      */
-    public static function post(string $routeName, array $callable, array $extraDatas = [])
+    public static function post(string $routeName, array $callable)
     {
-        self::addRoute([self::METHOD_POST], $routeName, $callable, $extraDatas);
+        self::addRoute([self::METHOD_POST], $routeName, $callable);
     }
 
     /**
@@ -44,14 +42,12 @@ class Router
      * @param array $methods
      * @param string $routeName
      * @param array $callable
-     * @param array $extraDatas
      */
-    private static function addRoute(array $methods, string $routeName, array $callable, array $extraDatas = [])
+    private static function addRoute(array $methods, string $routeName, array $callable)
     {
         self::$routes[$routeName] = [
             'methods' => $methods,
-            'callable' => $callable,
-            'datas' => $extraDatas
+            'callable' => $callable
         ];
     }
 
@@ -91,7 +87,6 @@ class Router
                 $controller->setRequest($request);
             }
 
-            $controller->setExtraDatas($routeParams['datas']);
             $controller->dispatch($method);
         }
     }

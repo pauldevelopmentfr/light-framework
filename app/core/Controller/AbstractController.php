@@ -12,13 +12,6 @@ abstract class AbstractController
      * @var array $request
      */
     protected $request = [];
-    
-    /**
-     * Contains model variables
-     *
-     * @var array $extraDatas
-     */
-    protected $extraDatas = [];
 
     /**
      * Dispatch action on model and render result
@@ -30,7 +23,7 @@ abstract class AbstractController
         $result = $this->$action();
 
         if ($result instanceof ViewModel) {
-            echo $result->renderHtml($this->extraDatas);
+            echo $result->renderHtml();
         }
     }
 
@@ -42,16 +35,6 @@ abstract class AbstractController
     public function setRequest(array $request)
     {
         $this->request = $request;
-    }
-
-    /**
-     * Set model variables
-     *
-     * @param array $extraDatas
-     */
-    public function setExtraDatas(array $extraDatas = [])
-    {
-        $this->extraDatas = $extraDatas;
     }
 
     /**
