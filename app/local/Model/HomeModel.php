@@ -7,9 +7,9 @@ use App\Core\Model\AbstractModel;
 class HomeModel extends AbstractModel
 {
     /**
-     * Contains model name
+     * Contains translation file name
      *
-     * @var string $modelName
+     * @var string $translationFile
      */
-    protected $modelName = 'Home';
+    protected $translationFile = 'Home';
 }

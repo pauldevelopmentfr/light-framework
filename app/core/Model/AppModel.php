@@ -2,16 +2,14 @@
 
 namespace App\Core\Model;
 
-use App\Core\Model\AbstractModel;
-
 class AppModel extends AbstractModel
 {
     /**
-     * Contains model name
+     * Contains translation file name
      *
-     * @var string $modelName
+     * @var string $translationFile
      */
-    protected $modelName = 'App';
+    protected $translationFile = 'App';
 
     /**
      * Get Light config by name

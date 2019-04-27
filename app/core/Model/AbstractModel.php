@@ -16,11 +16,11 @@ abstract class AbstractModel
     protected $db;
 
     /**
-     * Contains model name
+     * Contains translation file name
      *
-     * @var string $modelName
+     * @var string $translationFile
      */
-    protected $modelName;
+    protected $translationFile;
 
     /**
      * Constructor
@@ -96,8 +96,8 @@ abstract class AbstractModel
 
         $genericalPath = getcwd() . "/app/language/{$language}/%s.csv";
 
-        if (file_exists(sprintf($genericalPath, $this->modelName))) {
-            $filePath = sprintf($genericalPath, $this->modelName);
+        if (file_exists(sprintf($genericalPath, $this->translationFile))) {
+            $filePath = sprintf($genericalPath, $this->translationFile);
             $translatedText = $this->searchTranslation($filePath, $text);
         } else {
             $filePath = sprintf($genericalPath, 'Global');
