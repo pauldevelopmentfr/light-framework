@@ -77,3 +77,9 @@ Here is an example:
 	    ['ContactController', 'indexAction']
 	);
 *If you want to create a POST route, you have to use the same process and replace **Route::get** by **Route::post***
+
+## Edit application
+Please don't touch the core part of the application located in **app/core/** and only use the **app/local/** to create your content if you don't know how to edit the core properly.
+
+## Contribuate
+I would love to receive contributions because the code is obviously not perfect and not finish, everything is good to take! The only rule is to respect the will of the "Light Framework": less is more!
