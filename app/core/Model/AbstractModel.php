@@ -30,6 +30,14 @@ abstract class AbstractModel
         $this->db = Light::getDatabase();
     }
 
+    /**
+     * Search translation in file
+     *
+     * @param resource $filePath
+     * @param string $text
+     *
+     * @return string
+     */
     private function searchTranslation($filePath, string $text) : string
     {
         if (!file_exists($filePath)) {
