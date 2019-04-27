@@ -17,10 +17,15 @@ abstract class AbstractController
      * Dispatch action on model and render result
      *
      * @param string $action
+     * @param array $parameters
      */
-    public function dispatch(string $action)
+    public function dispatch(string $action, array $parameters = [])
     {
-        $result = $this->$action();
+        if (!empty($parameters)) {
+            $result = $this->$action($parameters);
+        } else {
+            $result = $this->$action();
+        }
 
         if ($result instanceof ViewModel) {
             echo $result->renderHtml();

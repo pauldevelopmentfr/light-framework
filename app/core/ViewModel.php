@@ -72,11 +72,11 @@ class ViewModel
             ob_start();
                 ob_start();
                     extract($datas);
-                    require_once getcwd() . "/public/view/template/header.phtml";
+                    require_once getcwd() . '/public/view/template/header.phtml';
                     require_once $file;
-                    require_once getcwd() . "/public/view/template/footer.phtml";
+                    require_once getcwd() . '/public/view/template/footer.phtml';
                 $content = ob_get_clean();
-                require_once getcwd() . "/public/view/template/app.phtml";
+                require_once getcwd() . '/public/view/template/app.phtml';
             $html = ob_get_clean();
             unset($content);
         }

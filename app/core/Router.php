@@ -62,8 +62,20 @@ class Router
      */
     public static function dispatch(string $requestUri, string $requestMethod, array $request = [])
     {
+        $explodeRequest = array_values(array_filter(explode('/', $requestUri)));
+        $realRouteName = !empty($explodeRequest) ? "/{$explodeRequest[0]}" : $requestUri;
+        $parameters = [];
+
+        if (is_array($explodeRequest)) {
+            array_shift($explodeRequest);
+
+            foreach ($explodeRequest as $parameter) {
+                array_push($parameters, $parameter);
+            }
+        }
+
         foreach (self::$routes as $routeName => $routeParams) {
-            if ($routeName !== $requestUri || !in_array($requestMethod, $routeParams['methods'])) {
+            if ($routeName !== "{$realRouteName}" || !in_array($requestMethod, $routeParams['methods'])) {
                 continue;
             }
 
@@ -89,7 +101,7 @@ class Router
                 $controller->setRequest($request);
             }
 
-            $controller->dispatch($method);
+            $controller->dispatch($method, $parameters);
         }
     }
 }

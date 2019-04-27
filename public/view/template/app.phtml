@@ -1,11 +1,11 @@
-<?php $homeModel = \App\Core\Light::getModel('home'); ?>
+<?php $appModel = \App\Core\Light::getModel('app'); ?>
 <!DOCTYPE html>
 <html>
     <head>
-        <title><?php echo $homeModel->getLightConfig('name'); ?> </title>
+        <title><?php echo $appModel->getLightConfig('name'); ?> </title>
         <link rel="stylesheet" href="/public/css/global.min.css" />
-        <meta name="description" content="<?php echo $homeModel->getLightConfig('description'); ?>" />
-        <meta name="keywords" content="<?php echo $homeModel->getLightConfig('keywords'); ?>" />
+        <meta name="description" content="<?php echo $appModel->getLightConfig('description'); ?>" />
+        <meta name="keywords" content="<?php echo $appModel->getLightConfig('keywords'); ?>" />
         <meta name="robots" content="index, follow" />
     </head>
 

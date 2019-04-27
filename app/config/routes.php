@@ -6,3 +6,8 @@ Router::get(
     '/',
     ['HomeController', 'indexAction']
 );
+
+Router::get(
+    '/language',
+    ['HomeController', 'languageAction']
+);

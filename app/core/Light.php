@@ -53,11 +53,29 @@ final class Light
      *
      * @return AbstractModel
      */
-    public function getModel(string $name) : AbstractModel
+    public static function getModel(string $name) : AbstractModel
     {
         $modelName = ucfirst(strtolower($name));
-        $model = "App\Local\Model\\{$modelName}Model";
-        return new $model();
+        $model = "App\%s\Model\\{$modelName}Model";
+
+        $coreModel = sprintf($model, 'Core');
+
+        if (!class_exists($coreModel)) {
+            $localModel = sprintf($model, 'Local');
+            return new $localModel();
+        }
+        
+        return new $coreModel();
+    }
+
+    /**
+     * Get application languages
+     *
+     * @return array
+     */
+    public static function getLanguages() : array
+    {
+        return Config::getConfig('languages') ?? ['en'];
     }
 
     /**
