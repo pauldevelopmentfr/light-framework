@@ -2,11 +2,15 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title><?php echo $appModel->getLightConfig('name'); ?> </title>
-        <link rel="stylesheet" href="/public/css/global.min.css" />
+        <meta charset="utf-8">
+        <title><?php echo $appModel->getLightConfig('name'); ?></title>
         <meta name="description" content="<?php echo $appModel->getLightConfig('description'); ?>" />
         <meta name="keywords" content="<?php echo $appModel->getLightConfig('keywords'); ?>" />
         <meta name="robots" content="index, follow" />
+        <link rel="stylesheet" href="/public/css/global.min.css" />
+        <?php foreach ($extrasCss as $css) : ?>
+            <link rel="stylesheet" href="/public/css/<?php echo $css; ?>.min.css" />
+        <?php endforeach; ?>
     </head>
 
     <body>

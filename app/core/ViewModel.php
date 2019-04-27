@@ -43,18 +43,26 @@ class ViewModel
      */
     public function __call(string $name, array $arguments)
     {
-        if (substr($name, 0, 3) !== 'get') {
+        $methodType = substr($name, 0, 3);
+
+        if (!in_array($methodType, ['get', 'set'])) {
             $className = static::class;
             throw new BadMethodCallException("Call to undefined method {$className}->{$name}()");
         }
 
         $key = substr(strtolower(preg_replace('/([A-Z])/', "_$1", substr($name, 3))), 1);
 
-        if (!isset($this->parameters[$key])) {
-            throw new BadMethodCallException("The method {$name} doesn't exists !");
+        if ($methodType === 'get') {
+            if (!isset($this->parameters[$key])) {
+                throw new BadMethodCallException("The method {$name} doesn't exists !");
+            }
+    
+            return $this->parameters[$key];
         }
 
-        return $this->parameters[$key];
+        if ($methodType === 'set') {
+            $this->parameters[$key] = $arguments;
+        }
     }
 
     /**
@@ -76,9 +84,11 @@ class ViewModel
                     require_once $file;
                     require_once getcwd() . '/public/view/template/footer.phtml';
                 $content = ob_get_clean();
+                $extrasCss = $this->parameters['extras_css'] ?? [];
                 require_once getcwd() . '/public/view/template/app.phtml';
             $html = ob_get_clean();
             unset($content);
+            unset($extrasCss);
         }
 
         return $html;

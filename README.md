@@ -34,6 +34,11 @@ You just have to create a **.phtml** file in **public/view/**. *(eg: **contact.p
 **Warning:** All your pages will take the **public/view/template/app.phtml** skeleton, please don't declare **html**, **head** or **body** markups which are already in this file.
 By the way, if you want to use the same header/footer on every pages, there are already two files ready in **public/view/template/**
 
+#### Add Custom CSS to view
+Every views is based on the app.phtml skeleton: they all call global.min.css ! However, you can add extras CSS by using the method **setExtrasCss()** on your view.
+    
+    <?php $this->setExtrasCss('css1', 'css2', 'css3'); ?>
+
 #### Create a controller
 You have to:
 - go in the folder **app/local/Controller/**

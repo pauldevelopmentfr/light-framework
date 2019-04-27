@@ -70,7 +70,7 @@ class Router
             array_shift($explodeRequest);
 
             foreach ($explodeRequest as $parameter) {
-                array_push($parameters, $parameter);
+                $parameters[] = $parameter;
             }
         }
 
