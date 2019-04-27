@@ -65,7 +65,7 @@ class ViewModel
     public function renderHtml() : string
     {
         $file = getcwd() . "/public/view/{$this->view}";
-        $datas = $this->parameters;
+        $datas = $this->parameters ?? [];
         $html = '';
     
         if (file_exists($file)) {
