@@ -144,12 +144,12 @@ You can add every translations in **Global.csv**, but it's better to separate tr
     
     class ContactModel extends AbstractModel
     {
-    /**
-     * Contains translation file name
-     *
-     * @var string $translationFile
-     */
-    protected $translationFile = 'Contact';
+        /**
+         * Contains translation file name
+         *
+         * @var string $translationFile
+         */
+        protected $translationFile = 'Contact';
 Then, create a **Contact.csv** in all your languages **app/language/{language code}**. and add your translations as follow:
 `"Default language sentence","New language sentence"`
 
