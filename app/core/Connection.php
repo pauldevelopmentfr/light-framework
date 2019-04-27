@@ -56,6 +56,16 @@ class Connection
     }
 
     /**
+     * Get database instance
+     *
+     * @return PDO
+     */
+    public function getDatabase() : PDO
+    {
+        return $this->pdo;
+    }
+
+    /**
      * Disconnect the database
      */
     public function disconnect()

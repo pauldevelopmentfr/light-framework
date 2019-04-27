@@ -13,5 +13,4 @@
 require_once 'app/core/Autoloader.php';
 
 \App\Core\Autoloader::register();
-
-(new \App\Core\Application)->run();
+\App\Core\Light::run();

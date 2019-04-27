@@ -3,8 +3,10 @@
 namespace App\Core;
 
 use App\Core\Router;
+use \PDO;
+use App\Core\Model\AbstractModel;
 
-final class Application
+final class Light
 {
     /**
      * Load application configs
@@ -35,6 +37,30 @@ final class Application
     }
 
     /**
+     * Get database instance
+     *
+     * @return PDO
+     */
+    public static function getDatabase() : PDO
+    {
+        return Config::getConfig('db_connection')->getDatabase();
+    }
+
+    /**
+     * Get model
+     *
+     * @param string $name
+     *
+     * @return AbstractModel
+     */
+    public function getModel(string $name) : AbstractModel
+    {
+        $modelName = ucfirst(strtolower($name));
+        $model = "App\Local\Model\\{$modelName}Model";
+        return new $model();
+    }
+
+    /**
      * Load application session
      */
     public function loadSession()
@@ -57,12 +83,12 @@ final class Application
     /**
      * Run application
      */
-    public function run()
+    public static function run()
     {
-        $this->loadConfigs();
-        $this->loadRoutes();
-        $this->loadDatabase();
-        $this->loadSession();
-        $this->dispatch();
+        self::loadConfigs();
+        self::loadRoutes();
+        self::loadDatabase();
+        self::loadSession();
+        self::dispatch();
     }
 }

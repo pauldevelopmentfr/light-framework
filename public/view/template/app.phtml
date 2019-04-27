@@ -1,0 +1,15 @@
+<?php $homeModel = \App\Core\Light::getModel('home'); ?>
+<!DOCTYPE html>
+<html>
+    <head>
+        <title><?php echo $homeModel->getLightConfig('name'); ?> </title>
+        <link rel="stylesheet" href="/public/css/global.min.css" />
+        <meta name="description" content="<?php echo $homeModel->getLightConfig('description'); ?>" />
+        <meta name="keywords" content="<?php echo $homeModel->getLightConfig('keywords'); ?>" />
+        <meta name="robots" content="index, follow" />
+    </head>
+
+    <body>
+        <?php echo $content; ?>
+    </body>
+</html>
