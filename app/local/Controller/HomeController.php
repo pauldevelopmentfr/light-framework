@@ -21,7 +21,7 @@ class HomeController extends AbstractController
     /**
      * Language controller
      */
-    public function languageAction(array $language)
+    public function languageAction(array $language = [])
     {
         if (empty($language) || !isset($language[0])) {
             $this->redirect('/');
