@@ -30,6 +30,41 @@ abstract class AbstractModel
         $this->db = Light::getDatabase();
     }
 
+    private function searchTranslation($filePath, string $text) : string
+    {
+        if (!file_exists($filePath)) {
+            throw new Exception(
+                "The translation file doesn't exists"
+            );
+        }
+
+        $file = fopen(
+            $filePath,
+            'r'
+        );
+
+        while (!feof($file)) {
+            $read = fgets($file);
+            $read = str_replace("\n", '', $read);
+
+            $line = explode('","', $read);
+            
+            if (is_array($line) && count($line) == 2) {
+                $line[0] = substr($line[0], 1);
+                $line[1] = substr($line[1], 0, strlen($line[1]) - 1);
+            }
+
+            if ($line[0] === $text) {
+                $text = $line[1];
+                break;
+            }
+        }
+
+        fclose($file);
+
+        return $text;
+    }
+
     /**
      * Make translation on a string
      *
@@ -51,39 +86,22 @@ abstract class AbstractModel
             $language = $defaultLanguage;
         }
 
-        $filePath = getcwd() . "/app/language/{$language}/%s.csv";
+        $genericalPath = getcwd() . "/app/language/{$language}/%s.csv";
 
-        if (file_exists(sprintf($filePath, $this->modelName))) {
-            $filePath = sprintf($filePath, $this->modelName);
+        if (file_exists(sprintf($genericalPath, $this->modelName))) {
+            $filePath = sprintf($genericalPath, $this->modelName);
+            $translatedText = $this->searchTranslation($filePath, $text);
         } else {
-            $filePath = sprintf($filePath, 'Global');
+            $filePath = sprintf($genericalPath, 'Global');
+            return $this->searchTranslation($filePath, $text);
         }
 
-        if (!file_exists($filePath)) {
-            throw new Exception(
-                "The translation for \"{$language}\" language doesn't exists for {$this->modelName}Model"
-            );
+        if ($translatedText == $text) {
+            $filePath = sprintf($genericalPath, 'Global');
+
+            $translatedText = $this->searchTranslation($filePath, $text);
         }
 
-        $file = fopen(
-            $filePath,
-            'r'
-        );
-        
-        while (!feof($file)) {
-            $read = fgets($file);
-            $read = str_replace("\n", '', $read);
-
-            $line = explode('","', $read);
-            
-            if (is_array($line) && count($line) == 2) {
-                $line[0] = substr($line[0], 1);
-                $line[1] = substr($line[1], 0, strlen($line[1]) - 1);
-            }
-
-            return ($line[0] == $text) ? $line[1] : $text;
-        }
-        
-        fclose($file);
+        return $translatedText;
     }
 }
