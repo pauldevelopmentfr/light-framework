@@ -24,7 +24,7 @@ class HomeController extends AbstractController
     public function languageAction(array $language = [])
     {
         if (empty($language) || !isset($language[0])) {
-            $this->redirect('/');
+            $this->redirect($_SERVER['HTTP_REFERER']);
             die;
         }
 
@@ -34,7 +34,7 @@ class HomeController extends AbstractController
             $_SESSION['language'] = $lang;
         }
 
-        $this->redirect('/');
+        $this->redirect($_SERVER['HTTP_REFERER']);
         die;
     }
 }
