@@ -1,0 +1,15 @@
+<?php $homeModel = \App\Core\Light::getModel('Home'); ?>
+<div id="container">
+    <h1>Light Framework</h1>
+
+    <p><?php echo $homeModel->__('Error 404 - Page not found'); ?></p>
+
+    <p>
+        <?php foreach (\App\Core\Config::getConfig('languages') as $name => $code) : ?>
+            <a href="/language/<?php echo $code; ?>/">
+                <img src="/public/img/flags/<?php echo $code; ?>.png" alt="<?php echo $code; ?> flag" />
+                <?php echo $homeModel->__($name); ?>
+            </a>
+        <?php endforeach; ?>
+    </p>
+</div>

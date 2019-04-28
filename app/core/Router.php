@@ -2,6 +2,8 @@
 
 namespace App\Core;
 
+use \App\Core\Controller\AbstractController;
+use \App\Core\Controller\ErrorController;
 use \Exception;
 
 class Router
@@ -74,10 +76,14 @@ class Router
             }
         }
 
+        $isRouteFound = false;
+
         foreach (self::$routes as $routeName => $routeParams) {
             if ($routeName !== "{$realRouteName}" || !in_array($requestMethod, $routeParams['methods'])) {
                 continue;
             }
+
+            $isRouteFound = true;
 
             $className = "\\App\\Core\\Controller\\{$routeParams['callable'][0]}";
 
@@ -97,11 +103,17 @@ class Router
                 throw new Exception("Controller {$className}->{$method}() not found");
             }
 
-            if ($controller instanceof \App\Core\Controller\AbstractController) {
+            if ($controller instanceof AbstractController) {
                 $controller->setRequest($request);
             }
 
             $controller->dispatch($method, $parameters);
+        }
+
+        if ($isRouteFound === false) {
+            $controller = new ErrorController();
+            $controller->setRequest($request);
+            $controller->dispatch('notFoundAction', []);
         }
     }
 }
