@@ -1,14 +1,14 @@
 # Light Framework
 
-Light Framework is a PHP framework intended for small projects with low resources. The framework use a special design pattern similar to MVC/MVVM.
+Light Framework is a PHP framework intended for small projects with low resources. The framework uses a special design pattern similar to MVC/MVVM.
 
 ## Requirements
-You have to use **PHP 7.2.x** or higher and execute **dump.sql** to use the application properly.
+You need **PHP 7.2.x** or higher and execute **dump.sql** to use the application properly.
 
 ## Configure application
 
 ### Database connection and language configuration
-You just have to go in **config/** folder and create a simple **configs.php** file as follows:
+Create a simple configs.php file in the **config/** folder as follows:
     
     <?php
     
@@ -28,9 +28,9 @@ You just have to go in **config/** folder and create a simple **configs.php** fi
         'default_language' => 'en'
     ];
 
-### Create a page reachable
+### Create your first accessible page
 #### Create a view
-You just have to create a **.phtml** file in **public/view/**. *(eg: **contact.phtml**)*.
+Create a **.phtml** file in **public/view/**. *(eg: **contact.phtml**)*.
 **Warning:** All your pages will take the **public/view/template/app.phtml** skeleton, please don't declare **html**, **head** or **body** markups which are already in this file.
 By the way, if you want to use the same header/footer on every pages, there are already two files ready in **public/view/template/**
 
@@ -69,7 +69,7 @@ Here is your ContactController:
     }
 
 #### Create a route
-Depending on if you want to create a **GET** or a **POST** route, there are static methods in the class **Router** to create route. Go to your **config/routes.php** and add your route add the end of the file !
+Depending on if you want to create a **GET** or a **POST** route, there are static methods in the class **Router** to create route. Go to your **config/routes.php** and add your route add the end of the file!
 
 - The parameter of **Router::get** or **Router::post** method is the route you want to create.
 - The second parameter is an array with
@@ -159,7 +159,7 @@ Then, create a **Contact.csv** in all your languages **app/language/{language co
 `"Default language sentence","New language sentence"`
 
 ## Edit application
-Please don't touch the core part of the application located in **app/core/** and only use the **app/local/** to create your content if you don't know how to edit the core properly.
+Please do not edit the core part of the application located in **app/core/** and only use the **app/local/** to create your content if you don't know how to edit the core properly.
 
-## Contribuate
-I would love to receive contributions because the code is obviously not perfect and not finish, everything is good to take! The only rule is to respect the will of the "Light Framework": less is more!
+## Contribute
+I would love to receive contributions as the code is obviously not perfect and not finished! The only rule is to respect the purpose the "Light Framework": less is more!
