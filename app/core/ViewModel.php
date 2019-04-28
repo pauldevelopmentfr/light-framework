@@ -78,6 +78,7 @@ class ViewModel
     
         if (file_exists($file)) {
             ob_start();
+                $appModel = \App\Core\Light::getModel('app');
                 ob_start();
                     extract($datas);
                     require_once getcwd() . '/public/view/template/header.phtml';
@@ -87,6 +88,7 @@ class ViewModel
                 $extrasCss = $this->parameters['extras_css'] ?? [];
                 require_once getcwd() . '/public/view/template/app.phtml';
             $html = ob_get_clean();
+            unset($appModel);
             unset($content);
             unset($extrasCss);
         }
