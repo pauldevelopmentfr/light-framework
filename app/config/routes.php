@@ -8,6 +8,6 @@ Router::get(
 );
 
 Router::get(
-    '/language',
+    '/language/{lang}',
     ['HomeController', 'languageAction']
 );

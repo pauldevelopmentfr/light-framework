@@ -19,6 +19,16 @@ class Router
     private static $routes = [];
 
     /**
+     * Contains namespaces
+     *
+     * @var array $namespaces
+     */
+    private static $namespaces = [
+        'Core',
+        'Local'
+    ];
+
+    /**
      * Add a get route
      *
      * @param string $routeName
@@ -56,6 +66,78 @@ class Router
     }
 
     /**
+     * Clean URL
+     *
+     * @param string $url
+     *
+     * @return string
+     */
+    private static function cleanUrl(string $url) : string
+    {
+        return '/' . trim($url, '/');
+    }
+
+    // TODO
+    private static function getParameters(string $matchedRoute) : array
+    {
+        preg_match_all('/{.*?}/', $matchedRoute, $matches);
+        $routeParameters = $matches[0];
+
+        $parameters = [
+            'mandatory' => [],
+            'optional' => []
+        ];
+
+        foreach ($routeParameters as $routeParameter) {
+            if (preg_match('/{.*?\?}/', $routeParameter)) {
+                $parameters['optional'][] = $routeParameter;
+            } else {
+                $parameters['mandatory'][] = $routeParameter;
+            }
+        }
+
+        return $parameters;
+    }
+
+    /**
+     * Set parameters in URL and keep them on an array
+     *
+     * @param string $route
+     * @param string $routeParameter
+     * @param array $requestParameters
+     * @param array $parameters
+     *
+     * @return void
+     */
+    private static function extractParameter(
+        string &$route,
+        string $routeParameter,
+        array &$requestParameters,
+        array &$parameters
+    ) : void {
+        $parameterName = preg_match('/(?<={).+?(?=})/', preg_replace('/\?/', '', $routeParameter), $matches);
+        $parameterName = $matches[0];
+        $routeParameter = preg_quote($routeParameter);
+        $route = preg_replace("/{$routeParameter}/", current($requestParameters), $route);
+        $parameters[$parameterName] = current($requestParameters);
+        array_shift($requestParameters);
+    }
+
+    /**
+     * Render not found page
+     *
+     * @param array $request
+     *
+     * @return void
+     */
+    private static function renderNotFoundPage(array $request) : void
+    {
+        $controller = new ErrorController();
+        $controller->setRequest($request);
+        $controller->dispatch('notFoundAction', []);
+    }
+
+    /**
      * Dispatch controller on a route
      *
      * @param string $requestUri
@@ -64,56 +146,69 @@ class Router
      */
     public static function dispatch(string $requestUri, string $requestMethod, array $request = [])
     {
-        $explodeRequest = array_values(array_filter(explode('/', $requestUri)));
-        $realRouteName = !empty($explodeRequest) ? "/{$explodeRequest[0]}" : $requestUri;
+        $routes = self::$routes;
         $parameters = [];
+        $requestParameters = array_values(array_filter(explode('/', $requestUri)));
+        $pageName = htmlspecialchars(array_shift($requestParameters));
+        $routesUrl = array_keys($routes);
+        $matchedRoute = current(preg_grep("/{$pageName}/", $routesUrl));
 
-        if (is_array($explodeRequest)) {
-            array_shift($explodeRequest);
-
-            foreach ($explodeRequest as $parameter) {
-                $parameters[] = $parameter;
-            }
+        if ($matchedRoute === false) {
+            self::renderNotFoundPage($request);
+            return;
         }
 
-        $isRouteFound = false;
+        $routeInfos = $routes[$matchedRoute];
 
-        foreach (self::$routes as $routeName => $routeParams) {
-            if ($routeName !== "{$realRouteName}" || !in_array($requestMethod, $routeParams['methods'])) {
-                continue;
-            }
-
-            $isRouteFound = true;
-
-            $className = "\\App\\Core\\Controller\\{$routeParams['callable'][0]}";
-
-            if (!class_exists($className)) {
-                $className = "\\App\\Local\\Controller\\{$routeParams['callable'][0]}";
-
-                if (!class_exists($className)) {
-                    throw new Exception("Controller {$className} not found.");
-                }
-            }
-
-            $controller = new $className();
-
-            $method = $routeParams['callable'][1];
-
-            if (!method_exists($controller, $method)) {
-                throw new Exception("Controller {$className}->{$method}() not found");
-            }
-
-            if ($controller instanceof AbstractController) {
-                $controller->setRequest($request);
-            }
-
-            $controller->dispatch($method, $parameters);
+        if (empty($matchedRoute) || !in_array($requestMethod, $routeInfos['methods'])) {
+            self::renderNotFoundPage($request);
+            return;
         }
 
-        if ($isRouteFound === false) {
-            $controller = new ErrorController();
+        $matchedRoute = self::cleanUrl($matchedRoute);
+        $routeParameters = self::getParameters($matchedRoute);
+
+        if (count($requestParameters) < count($routeParameters['mandatory'])) {
+            self::renderNotFoundPage($request);
+            return;
+        }
+
+        foreach ($routeParameters['mandatory'] as $routeParameter) {
+            self::extractParameter($matchedRoute, $routeParameter, $requestParameters, $parameters);
+        }
+
+        while (count($requestParameters) > 0) {
+            $routeParameter = current($routeParameters['optional']);
+            self::extractParameter($matchedRoute, $routeParameter, $requestParameters, $parameters);
+            array_shift($routeParameters['optional']);
+        }
+
+        foreach (self::$namespaces as $namespace) {
+            $className = "\\App\\{$namespace}\\Controller\\{$routeInfos['callable'][0]}";
+            $isControllerExists = true;
+
+            if (class_exists($className)) {
+                break;
+            }
+
+            $isControllerExists = false;
+        }
+
+        if ($isControllerExists === false) {
+            throw new Exception("Controller {$className} not found.");
+        }
+
+        $controller = new $className();
+        $method = $routeInfos['callable'][1];
+
+        if (!method_exists($controller, $method)) {
+            throw new Exception("Controller {$className}->{$method}() not found");
+        }
+
+        if ($controller instanceof AbstractController) {
             $controller->setRequest($request);
-            $controller->dispatch('notFoundAction', []);
         }
+
+        $controller->dispatch($method, $parameters);
     }
 }

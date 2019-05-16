@@ -20,21 +20,24 @@ class HomeController extends AbstractController
 
     /**
      * Language controller
+     *
+     * @param array $parameters
      */
-    public function languageAction(array $language = [])
+    public function languageAction(array $parameters = [])
     {
-        if (empty($language) || !isset($language[0])) {
-            $this->redirect($_SERVER['HTTP_REFERER']);
-            die;
+        $redirectUrl = $_SERVER['HTTP_REFERER'] ?? '/';
+        if (empty($parameters) || !isset($parameters['lang'])) {
+            $this->redirect($redirectUrl);
+            return;
         }
 
-        $lang = htmlspecialchars($language[0]);
+        $lang = htmlspecialchars($parameters['lang']);
 
         if (in_array($lang, Config::getConfig('languages'))) {
             $_SESSION['language'] = $lang;
         }
 
-        $this->redirect($_SERVER['HTTP_REFERER']);
-        die;
+        $this->redirect($redirectUrl);
+        return;
     }
 }
