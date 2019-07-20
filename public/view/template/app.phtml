@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="<?php echo $_SESSION['language'] ?? substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2); ?>">
     <head>
         <meta charset="utf-8">
         <title><?php echo $appModel->getLightConfig('name'); ?></title>

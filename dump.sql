@@ -7,5 +7,4 @@ CREATE TABLE `light_config` (
 INSERT INTO `light_config` (`id`, `title`, `value`) VALUES
 (1, 'name', 'Light Framework'),
 (2, 'description', 'Light Framework has been developed by Paul Sinnah. He is intended for small projects !'),
-(3, 'keywords', 'light,light framework,framework php'),
-(4, 'language', 'EN');
+(3, 'keywords', 'light,light framework,framework php');
