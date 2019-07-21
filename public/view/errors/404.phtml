@@ -1,6 +1,6 @@
 <?php $homeModel = \App\Core\Light::getModel('Home'); ?>
 <div id="container">
-    <h1>Light Framework</h1>
+    <h1><?php echo $appModel->getLightConfig('name'); ?></h1>
 
     <p><?php echo $homeModel->__('Error 404 - Page not found'); ?></p>
 
