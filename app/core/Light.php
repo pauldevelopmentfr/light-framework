@@ -58,14 +58,14 @@ final class Light
         $modelName = ucfirst(strtolower($name));
         $model = "App\%s\Model\\{$modelName}Model";
 
-        $coreModel = sprintf($model, 'Core');
+        $localModel = sprintf($model, 'Local');
 
-        if (!class_exists($coreModel)) {
-            $localModel = sprintf($model, 'Local');
-            return new $localModel();
+        if (!class_exists($localModel)) {
+            $coreModel = sprintf($model, 'Core');
+            return new $coreModel();
         }
         
-        return new $coreModel();
+        return new $localModel();
     }
 
     /**
