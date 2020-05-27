@@ -161,5 +161,19 @@ Then, create a **Contact.csv** in all your languages **app/language/{language co
 ## Edit application
 Please do not edit the core part of the application located in **app/core/** and only use the **app/local/** to create your content if you don't know how to edit the core properly.
 
+If you need to edit the core, you can create a file in **app/local/** with the same name that the file you want to edit and make him extends the core file related.
+For example, if you want to edit the **app/core/AppModel.php** file, you just have to create a **app/local/AppModel.php** file like this
+
+    <?php
+    
+    namespace App\Local\Model;
+    
+    use App\Core\Model\AppModel as AppModelCore;
+    
+    class AppModel extends AppModelCore
+    {
+        /* Your extension right here */
+    }
+
 ## Contribute
 I would love to receive contributions as the code is obviously not perfect and not finished! The only rule is to respect the purpose the "Light Framework": less is more!

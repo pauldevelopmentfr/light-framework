@@ -11,7 +11,7 @@ final class Light
     /**
      * Load application configs
      */
-    public function loadConfigs()
+    public static function loadConfigs()
     {
         $configs = include getcwd() .'/app/config/configs.php';
         Config::loadConfig($configs);
@@ -20,7 +20,7 @@ final class Light
     /**
      * Load application routes
      */
-    public function loadRoutes()
+    public static function loadRoutes()
     {
         include getcwd() . '/app/config/routes.php';
     }
@@ -28,7 +28,7 @@ final class Light
     /**
      * Load application database connection
      */
-    public function loadDatabase()
+    public static function loadDatabase()
     {
         Config::setConfig(
             'db_connection',

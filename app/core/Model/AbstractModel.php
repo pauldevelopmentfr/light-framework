@@ -42,7 +42,7 @@ abstract class AbstractModel
     {
         if (!file_exists($filePath)) {
             throw new Exception(
-                "The translation file doesn't exists"
+                "The translation file \"{$filePath}\" doesn't exists"
             );
         }
 
@@ -77,16 +77,18 @@ abstract class AbstractModel
      * Make translation on a string
      *
      * @param string $string
+     * @param mixed $parameters
      *
      * @return string
      */
-    public function __(string $text) : string
+    public function __(string $text, ...$parameters) : string
     {
         $authorizedLanguages = Light::getLanguages();
         $language = $_SESSION['language'] ?? substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
         $defaultLanguage = Config::getConfig('default_language');
 
         if ($language === $defaultLanguage) {
+            $this->replaceParameters($text, $parameters);
             return $text;
         }
 
@@ -98,11 +100,11 @@ abstract class AbstractModel
 
         if (file_exists(sprintf($genericalPath, $this->translationFile))) {
             $filePath = sprintf($genericalPath, $this->translationFile);
-            $translatedText = $this->searchTranslation($filePath, $text);
         } else {
             $filePath = sprintf($genericalPath, 'Global');
-            return $this->searchTranslation($filePath, $text);
         }
+
+        $translatedText = $this->searchTranslation($filePath, $text);
 
         if ($translatedText == $text) {
             $filePath = sprintf($genericalPath, 'Global');
@@ -110,6 +112,25 @@ abstract class AbstractModel
             $translatedText = $this->searchTranslation($filePath, $text);
         }
 
+        self::replaceParameters($translatedText, $parameters);
+
         return $translatedText;
+    }
+
+    /**
+     * Replace %s by parameters in a text
+     *
+     * @param string $text
+     * @param array $parameters
+     *
+     * @return string
+     */
+    private static function replaceParameters(string &$text, array $parameters) : string
+    {
+        foreach ($parameters as $parameter) {
+            $text = preg_replace("/%s/", $parameter, $text, 1);
+        }
+
+        return $text;
     }
 }

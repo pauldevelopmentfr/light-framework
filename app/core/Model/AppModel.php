@@ -5,6 +5,13 @@ namespace App\Core\Model;
 class AppModel extends AbstractModel
 {
     /**
+     * Contains translation file name
+     *
+     * @var string $translationFile
+     */
+    protected $translationFile = 'Global';
+
+    /**
      * Get Light config by name
      *
      * @param string $name

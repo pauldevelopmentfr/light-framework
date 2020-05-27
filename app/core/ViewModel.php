@@ -15,6 +15,13 @@ class ViewModel
     private $view;
 
     /**
+     * Contains page name
+     *
+     * @var string $pageName
+     */
+    private $pageName;
+
+    /**
      * Contains parameters
      *
      * @var array|null $parameters
@@ -30,7 +37,18 @@ class ViewModel
     public function __construct(string $view, array $parameters = null)
     {
         $this->view = $view;
+        $this->pageName = str_replace('.phtml', '', $view);
         $this->parameters = $parameters;
+    }
+
+    /**
+     * Get current page name
+     *
+     * @return string
+     */
+    public function getPageName() : string
+    {
+        return $this->pageName;
     }
 
     /**

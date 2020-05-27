@@ -77,7 +77,13 @@ class Router
         return '/' . trim($url, '/');
     }
 
-    // TODO
+    /**
+     * Extract mandatories and optionals parameters of a route
+     *
+     * @param string $matchedRoute
+     *
+     * @return array
+     */
     private static function getParameters(string $matchedRoute) : array
     {
         preg_match_all('/{.*?}/', $matchedRoute, $matches);
@@ -148,7 +154,7 @@ class Router
     {
         $routes = self::$routes;
         $parameters = [];
-        $requestParameters = array_values(array_filter(explode('/', $requestUri)));
+        $requestParameters = array_values(array_filter(explode('/', explode('?', $requestUri)[0])));
         $pageName = htmlspecialchars(array_shift($requestParameters));
         $routesUrl = array_keys($routes);
         $matchedRoute = current(preg_grep("/{$pageName}/", $routesUrl));
